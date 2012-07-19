@@ -1,6 +1,6 @@
 var http = require('http');
-var WebSocketServer = require('websocket').server;
 var fs = require('fs');
+var ChatServer = require('./chat').ChatServer;
 
 // basic web server functionality.
 var server = http.createServer(function(request, response) {
@@ -14,6 +14,7 @@ var server = http.createServer(function(request, response) {
 			console.error('error reading file: ');
 			console.error(err);
 		}
+
 		response.writeHead(200);
 		response.write(data);
 		response.end();
@@ -26,11 +27,5 @@ var server = http.createServer(function(request, response) {
 // listen on a port
 server.listen(1337);
 
-// web socket server
-var socketServer = new WebSocketServer({
-	httpServer: server
-});
-
-socketServer.on('request', function(request) {
-	var connection = request.accept(null, request.origin);
-});
+// initialize the chat server
+var chatServer = new ChatServer(server);

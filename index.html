@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script type="text/javascript">
 			var socket = new WebSocket('ws://localhost:1337');
 			socket.onmessage = function(evt) {
@@ -8,5 +9,7 @@
 		</script>
 	</head>
 	<body>
+		<input type="text" />
+		<input type="button" value="Send" />
 	</body>
 </html>
