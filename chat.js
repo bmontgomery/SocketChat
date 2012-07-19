@@ -1,6 +1,7 @@
 var WebSocketServer = require('websocket').server;
 
 // # ChatUser
+//
 // A user and a connection are the same thing in this system.
 // Represents a user who is connected to the chat room.
 var ChatUser = (function() {
@@ -88,4 +89,6 @@ exports.ChatServer = (function() {
 			}
 		});
 	}
+
+	return ChatServer;
 })();

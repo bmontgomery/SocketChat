@@ -1,15 +1,54 @@
 <html>
 	<head>
+		<style type="text/css">
+			* {
+				font-size: 20px;
+				font-family: Lucida Grande;
+			}
+			input {
+				border-style: collapse;
+				border: solid 1px #dcdcdc;
+			}
+			.textbox {
+				width: 600px;
+			}
+			.button {
+
+			}
+		</style>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script type="text/javascript">
-			var socket = new WebSocket('ws://localhost:1337');
-			socket.onmessage = function(evt) {
-				console.log(evt.data);
-			};
+			$(function() {
+				var socket = new WebSocket('ws://localhost:1337');
+				socket.onmessage = function(evt) {
+					appendMessage('Someone Else', evt.data);
+				};
+
+				var btnSend = $('#btnSend');
+				var txtMessage = $('#txtMessage');
+				var divChatWindow = $('#divChatWindow');
+				var appendMessage;
+
+				var btnSendClick = function() {
+					socket.send(txtMessage.val());
+					appendMessage('Me', txtMessage.val());
+					txtMessage.val('');
+				};
+
+				btnSend.on('click', btnSendClick);
+
+				appendMessage = function(from, message) {
+					var messageDiv = $('<div/>');
+					messageDiv.text(from + ': ' + message);
+					divChatWindow.append(messageDiv);
+				};
+			});
 		</script>
 	</head>
 	<body>
-		<input type="text" />
-		<input type="button" value="Send" />
+		<input id="txtMessage" type="text" class="textbox" />
+		<input id="btnSend" type="button" value="Send" />
+		<div id="divChatWindow">
+		</div>
 	</body>
 </html>
