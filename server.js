@@ -27,8 +27,6 @@ var server = http.createServer(function(request, response) {
 		response.end();
 	};
 
-	console.log(request.url);
-
 	if (request.url === '/' || request.url === 'index.html') {
 		// Read the index.html from disk in this directory.
 		fs.readFile('index.html', readFileCallback);
