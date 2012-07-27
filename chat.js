@@ -18,7 +18,6 @@ var ChatUser = (function() {
 		this.connection = conn;
 
 		var messageReceived = function(evt) {
-			console.log('message received');
 			self.server.publishMessage(self, evt.utf8Data);
 		};
 
@@ -31,7 +30,6 @@ var ChatUser = (function() {
 	//
 	// Sends a message to the user.
 	ChatUser.prototype.sendMessage = function(message) {
-		console.log('sending message: ' + message);
 		this.connection.sendUTF(message);
 	};
 
@@ -50,7 +48,8 @@ exports.ChatServer = (function() {
 	function ChatServer(httpServer) {
 		var self = this;
 		this.users = [];
-		if (!httpServer) {
+
+		if (httpServer == null) {
 			throw 'httpServer is required';
 		}
 
