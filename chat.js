@@ -1,41 +1,5 @@
 var WebSocketServer = require('websocket').server;
 
-// # ChatUser
-//
-// A user and a connection are the same thing in this system.
-// Represents a user who is connected to the chat room.
-var ChatUser = (function() {
-
-	// ## Constructor
-	//
-	// **svr**: The ChatServer
-	//
-	// **conn**: The WebSocket connection to which this ChatUser is
-	// associated.
-	function ChatUser(svr, conn) {
-		var self = this;
-		this.server = svr;
-		this.connection = conn;
-
-		var messageReceived = function(evt) {
-			self.server.publishMessage(self, evt.utf8Data);
-		};
-
-		this.connection.on('message', messageReceived);
-	}
-
-	// ## sendMessage
-	//
-	// **message**: the message to send to the user
-	//
-	// Sends a message to the user.
-	ChatUser.prototype.sendMessage = function(message) {
-		this.connection.sendUTF(message);
-	};
-
-	return ChatUser;
-})();
-
 // # ChatServer
 //
 // The central object which manages users and ferries messages
@@ -73,7 +37,7 @@ exports.ChatServer = (function() {
 		socketServer.on('request', connectionRequest);
 	}
 
-	// ## publicMessage
+	// ## publishMessage
 	//
 	// **sender**: The ChatUser from which the message originated
 	//
@@ -90,4 +54,40 @@ exports.ChatServer = (function() {
 	}
 
 	return ChatServer;
+})();
+
+// # ChatUser
+//
+// A user and a connection are the same thing in this system.
+// Represents a user who is connected to the chat room.
+var ChatUser = (function() {
+
+	// ## Constructor
+	//
+	// **svr**: The ChatServer
+	//
+	// **conn**: The WebSocket connection to which this ChatUser is
+	// associated.
+	function ChatUser(svr, conn) {
+		var self = this;
+		this.server = svr;
+		this.connection = conn;
+
+		var messageReceived = function(evt) {
+			self.server.publishMessage(self, evt.utf8Data);
+		};
+
+		this.connection.on('message', messageReceived);
+	}
+
+	// ## sendMessage
+	//
+	// **message**: the message to send to the user
+	//
+	// Sends a message to the user.
+	ChatUser.prototype.sendMessage = function(message) {
+		this.connection.sendUTF(message);
+	};
+
+	return ChatUser;
 })();
